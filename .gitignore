@@ -13,9 +13,10 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Virtual environments
-venv/
-.venv/
-env/
+venv
+.venv
+env
+.venv_311
 
 # Large Datasets and data dumps (do not commit 300MB data dumps)
 golden_dataset.csv
