@@ -39,9 +39,23 @@ print("=" * 70, flush=True)
 # -------------------------------------------------------------
 # CONFIGURATION & API SETUP
 # -------------------------------------------------------------
+# Auto-load .env file if present
+env_file = Path(__file__).resolve().parent / ".env"
+if env_file.exists():
+    for line in env_file.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            k, v = line.split("=", 1)
+            os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
-OPENAI_MODEL = "gpt-4o-mini"
-JUDGE_MODEL = "gpt-4o-mini"
+if not OPENAI_API_KEY:
+    raise ValueError(
+        "❌ Thiếu OPENAI_API_KEY! Hãy thêm OPENAI_API_KEY vào file .env hoặc chạy: export OPENAI_API_KEY='sk-...'"
+    )
+
+OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
+JUDGE_MODEL = os.environ.get("JUDGE_MODEL", "gpt-4o-mini")
 
 LAB_MAX_ARTICLES = 1500
 LAB_MAX_CHUNKS = 3000
