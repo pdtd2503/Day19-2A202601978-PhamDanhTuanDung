@@ -4,6 +4,17 @@ Author: Pham Danh Tuan Dung (2A202601978)
 Course: AICB-K34 · Track 3: GraphRAG
 """
 import os, sys, re, json, time, random, hashlib, unicodedata
+from pathlib import Path
+
+# Auto-switch to compatible virtual environment (.venv_311 / .venv) if run with system python
+_script_dir = Path(__file__).resolve().parent
+_candidates = [
+    _script_dir / ".venv_311" / "bin" / "python3",
+    _script_dir / ".venv" / "bin" / "python3",
+]
+for _venv_py in _candidates:
+    if _venv_py.exists() and sys.executable != str(_venv_py):
+        os.execv(str(_venv_py), [str(_venv_py)] + sys.argv)
 
 # Force single-threaded execution for stability on macOS
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
@@ -11,8 +22,6 @@ os.environ["OMP_NUM_THREADS"] = "1"
 os.environ["MKL_NUM_THREADS"] = "1"
 os.environ["VECLIB_MAXIMUM_THREADS"] = "1"
 os.environ["NUMEXPR_NUM_THREADS"] = "1"
-
-from pathlib import Path
 from collections import defaultdict, Counter, deque
 from difflib import SequenceMatcher
 
